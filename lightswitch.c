@@ -3,26 +3,19 @@
 
 #define MAX64 0xFFFFFFFFFFFFFFFF
 
-void output_switches(uint64_t top, uint64_t bottom)
+void output_switches(uint64_t switches)
 {
-    uint64_t tmp;
     uint64_t index = 1;
 
-    for(int j = 0; j < 10; j++)
+    for(int j = 0; j < 8; j++)
     {
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 7; i++)
         {
-            if (index < 64)
-                tmp = bottom;
-            else
-                tmp = top;
 
-            if ((1ULL << index) & tmp)
-                printf("*");
+            if ((1ULL << index) & switches) 
+                printf("%.03lu", index);
             else 
-                printf(".");
-
-            //printf("%i", (1 <<index));
+                printf(" . ");
 
             index++;
         }
@@ -32,29 +25,29 @@ void output_switches(uint64_t top, uint64_t bottom)
 
 int main(void)
 {
-    uint64_t top;
-    uint64_t bottom;
+    uint64_t switches;
 
-    printf("100 Light Switches\n");
+    printf("56 Light Switches\n");
 
-    bottom = 0x0; top = 0x0;
+    switches = 0x0;
     printf("all off\n");
-    output_switches(top, bottom);
+    output_switches(switches);
 
-    bottom = MAX64; top = MAX64;
+    switches = MAX64;
     printf("\nall on\n");
-    output_switches(top, bottom);
+    output_switches(switches);
 
-    bottom = 0x0; top = 0x0; 
-    printf("\nalgo\n");
-    for(int i=1; i < 64; i++)
+    switches = 0x0;
+    printf("\nsquares\n");
+    for(int i=1; i < 57; i++)
     {
-        for (int j=1; j < 64; j += i)
+        for (int j=1; j < 57; j += i)
         {
             // bit flip
-            bottom = (1ULL << j) ^ bottom;
+            int index = j - 1;
+            switches = (1ULL << index) ^ switches;
         }
     }
-    output_switches(top, bottom);
+    output_switches(switches);
 }
 
